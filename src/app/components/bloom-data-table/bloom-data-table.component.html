@@ -1,0 +1,135 @@
+<div class="table-container">
+  <!-- Header con información y controles -->
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>table_view</mat-icon>
+        Datos de Estudiantes - Bloom
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="bloomData">
+        Archivo: {{ bloomData.fileName }} | Total: {{ dataSource.data.length }} estudiantes
+      </mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="controls-row">
+        <!-- Buscador -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar estudiante</mat-label>
+          <input matInput 
+                 (keyup)="applyFilter($event)" 
+                 placeholder="Nombre, apellido o grupo"
+                 #input>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        
+        <!-- Botón de recarga -->
+        <button mat-raised-button 
+                color="primary" 
+                (click)="refreshData()"
+                [disabled]="isLoading">
+          <mat-icon>refresh</mat-icon>
+          Actualizar
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Cargando datos...</p>
+  </div>
+
+  <!-- Error message -->
+  <mat-card *ngIf="error && !isLoading" class="error-card">
+    <mat-card-content>
+      <div class="error-content">
+        <mat-icon color="warn">error</mat-icon>
+        <div>
+          <h3>Error al cargar los datos</h3>
+          <p>{{ error }}</p>
+          <button mat-button color="primary" (click)="refreshData()">
+            Reintentar
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tabla de datos -->
+  <mat-card *ngIf="!isLoading && !error" class="table-card">
+    <mat-table [dataSource]="dataSource" matSort class="students-table">
+      
+      <!-- Columna ID -->
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+        <mat-cell *matCellDef="let student">{{ student.id }}</mat-cell>
+      </ng-container>
+
+      <!-- Columna Nombre -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+        <mat-cell *matCellDef="let student">{{ student.name }}</mat-cell>
+      </ng-container>
+
+      <!-- Columna Apellido Paterno -->
+      <ng-container matColumnDef="lastName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Apellido Paterno</mat-header-cell>
+        <mat-cell *matCellDef="let student">{{ student.lastName }}</mat-cell>
+      </ng-container>
+
+      <!-- Columna Apellido Materno -->
+      <ng-container matColumnDef="secondLastName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Apellido Materno</mat-header-cell>
+        <mat-cell *matCellDef="let student">{{ student.secondLastName || '-' }}</mat-cell>
+      </ng-container>
+
+      <!-- Columna Grupo -->
+      <ng-container matColumnDef="groupName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Grupo</mat-header-cell>
+        <mat-cell *matCellDef="let student">
+          <mat-chip-set>
+            <mat-chip color="primary" selected>{{ student.groupName }}</mat-chip>
+          </mat-chip-set>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Columna Acciones -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+        <mat-cell *matCellDef="let student">
+          <button mat-icon-button 
+                  color="primary"
+                  [matTooltip]="'Ver detalles de ' + getFullName(student)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button 
+                  color="accent"
+                  [matTooltip]="'Editar ' + getFullName(student)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+      <!-- Mensaje cuando no hay datos -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          <div class="no-data">
+            <mat-icon>info</mat-icon>
+            No se encontraron estudiantes que coincidan con "{{ input.value }}"
+          </div>
+        </td>
+      </tr>
+    </mat-table>
+
+    <!-- Paginador -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                   [pageSize]="10"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </mat-card>
+</div>

@@ -1,0 +1,18 @@
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin-left: 16px;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5f5f5;
+  overflow-y: auto;
+}

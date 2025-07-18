@@ -1,0 +1,117 @@
+.table-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header-card {
+  margin-bottom: 20px;
+  
+  mat-card-header {
+    margin-bottom: 16px;
+    
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  
+  .search-field {
+    flex: 1;
+    min-width: 300px;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  
+  mat-spinner {
+    margin-bottom: 16px;
+  }
+}
+
+.error-card {
+  margin: 20px 0;
+  
+  .error-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    
+    mat-icon {
+      font-size: 2rem;
+      height: 2rem;
+      width: 2rem;
+    }
+    
+    h3 {
+      margin: 0 0 8px 0;
+      color: #f44336;
+    }
+    
+    p {
+      margin: 0 0 16px 0;
+    }
+  }
+}
+
+.table-card {
+  .students-table {
+    width: 100%;
+    
+    .mat-column-id {
+      width: 80px;
+      text-align: center;
+    }
+    
+    .mat-column-actions {
+      width: 120px;
+      text-align: center;
+    }
+    
+    .no-data {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 40px;
+      color: #666;
+      font-style: italic;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    padding: 10px;
+  }
+  
+  .controls-row {
+    flex-direction: column;
+    align-items: stretch;
+    
+    .search-field {
+      min-width: unset;
+    }
+  }
+  
+  .students-table {
+    .mat-column-secondLastName,
+    .mat-column-actions {
+      display: none;
+    }
+  }
+}

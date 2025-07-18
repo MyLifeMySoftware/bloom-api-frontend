@@ -1,6 +1,7 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,13 +16,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
+import { AppComponent } from './app.component';
 
-export const appConfig: ApplicationConfig = {
+bootstrapApplication(AppComponent, {
   providers: [
     provideRouter([]),
     provideAnimations(),
     importProvidersFrom(
-      HttpClientModule,
+      HttpClientModule,  // HttpClientModule DEBE estar aquí
       MatToolbarModule,
       MatIconModule,
       MatCardModule,
@@ -37,4 +39,4 @@ export const appConfig: ApplicationConfig = {
       MatChipsModule
     )
   ]
-};
+}).catch(err => console.error(err));
